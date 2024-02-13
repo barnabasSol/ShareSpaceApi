@@ -1,0 +1,6 @@
+@ShareSpaceApi_HostAddress = http://localhost:7070
+
+GET {{ShareSpaceApi_HostAddress}}/auth/login
+Accept: application/json
+
+###
