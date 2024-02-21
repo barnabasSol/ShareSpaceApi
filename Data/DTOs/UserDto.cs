@@ -8,6 +8,11 @@ public class CreateUserDTO
     public required string Password { get; set; }
 }
 
+public struct MyStruct
+{
+    public string? ProfilePicUrl { get; set; }
+}
+
 public class ExtraUserInfoDto
 {
     public string? ProfilePicUrl { get; set; }
@@ -41,7 +46,6 @@ public class SuggestedUserDto
     public Guid UserId { get; set; }
 }
 
-//profile update dto class
 public class UpdateUserProfileDto
 {
     public string Name { get; set; } = string.Empty;
@@ -52,7 +56,6 @@ public class UpdateUserProfileDto
     public string? OldProfilePicUrl { get; set; }
 }
 
-//password update dto class
 public class UpdatePasswordDto
 {
     public string OldPassword { get; set; } = string.Empty;

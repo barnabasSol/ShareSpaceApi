@@ -7,14 +7,9 @@ using ShareSpaceApi.Repository.Contracts;
 
 namespace ShareSpaceApi.Repository
 {
-    public class MessageRepository : IMessageRepository
+    public class MessageRepository(ShareSpaceDbContext shareSpaceDb) : IMessageRepository
     {
-        private readonly ShareSpaceDbContext shareSpaceDb;
-
-        public MessageRepository(ShareSpaceDbContext shareSpaceDb)
-        {
-            this.shareSpaceDb = shareSpaceDb;
-        }
+        private readonly ShareSpaceDbContext shareSpaceDb = shareSpaceDb;
 
         public Task<ApiResponse<string>> DeleteMessage(Guid id)
         {
@@ -147,6 +142,7 @@ namespace ShareSpaceApi.Repository
                         ReceiverId = receiver,
                     }
                 );
+
                 await shareSpaceDb.SaveChangesAsync();
                 return new ApiResponse<string>
                 {

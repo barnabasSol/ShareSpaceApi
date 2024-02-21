@@ -20,7 +20,7 @@ public class UserRepository(
     {
         try
         {
-            var user_info = await shareSpaceDb.Users
+            var extras = await shareSpaceDb.Users
                 .Where(w => w.UserId.Equals(UserId))
                 .Select(
                     x =>
@@ -56,7 +56,7 @@ public class UserRepository(
             {
                 IsSuccess = true,
                 Message = "",
-                Data = user_info
+                Data = extras
             };
         }
         catch (Exception ex)
@@ -87,7 +87,7 @@ public class UserRepository(
         Guid current_user
     )
     {
-        using var transaction = shareSpaceDb.Database.BeginTransaction();
+        using var transaction = await shareSpaceDb.Database.BeginTransactionAsync();
         try
         {
             if (interests.Any())
@@ -106,7 +106,7 @@ public class UserRepository(
         }
         catch (Exception ex)
         {
-            transaction.Rollback();
+            await transaction.RollbackAsync();
             throw new Exception(ex.Message);
         }
     }
@@ -209,12 +209,12 @@ public class UserRepository(
             var followerUsers = await shareSpaceDb.Users
                 .Where(u => followerIds.Contains(u.UserId))
                 .ToListAsync();
-            if (!followerUsers.Any())
+            if (followerUsers.Count == 0)
             {
                 return new ApiResponse<IEnumerable<FollowerUserDto>>
                 {
                     IsSuccess = true,
-                    Data = Enumerable.Empty<FollowerUserDto>(),
+                    Data = [],
                     Message = "you don't have any followers"
                 };
             }
@@ -254,12 +254,12 @@ public class UserRepository(
             var followingUsers = await shareSpaceDb.Users
                 .Where(u => followingIds.Contains(u.UserId))
                 .ToListAsync();
-            if (!followingUsers.Any())
+            if (followingUsers.Count == 0)
             {
                 return new ApiResponse<IEnumerable<FollowerUserDto>>
                 {
                     IsSuccess = true,
-                    Data = Enumerable.Empty<FollowerUserDto>(),
+                    Data = [],
                     Message = "you don't have any followers"
                 };
             }

@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Carter;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using ShareSpaceApi.Data.DTOs;
 using ShareSpaceApi.Data.DTOs.ResponseType;
 using ShareSpaceApi.Repository.Contracts;
@@ -45,7 +46,11 @@ public class CommentEndpoints : ICarterModule
 
     public static async Task<
         Results<Ok<ApiResponse<string>>, BadRequest<ApiResponse<string>>>
-    > DeleteComment(ClaimsPrincipal user, Guid commentid, ICommentRepository commentRepository)
+    > DeleteComment(
+        [FromRoute] Guid commentid,
+        ClaimsPrincipal user,
+        ICommentRepository commentRepository
+    )
     {
         try
         {

@@ -35,7 +35,7 @@ public class SearchRepository(ShareSpaceDbContext shareSpaceDb) : ISearchReposit
                 {
                     IsSuccess = true,
                     Message = "No Result Found",
-                    Data = Enumerable.Empty<PostSearchDto>()
+                    Data = []
                 };
             }
             return new ApiResponse<IEnumerable<PostSearchDto>>

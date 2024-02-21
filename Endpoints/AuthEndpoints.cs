@@ -23,16 +23,19 @@ public class AuthEndpoints : ICarterModule
         try
         {
             var response = await auth.LoginUser(user);
-            return TypedResults.Ok(response);
+            return response.IsSuccess
+                ? TypedResults.Ok(response)
+                : TypedResults.BadRequest(response);
         }
         catch (Exception ex)
         {
-            var errorResponse = new AuthResponse
-            {
-                IsSuccess = false,
-                Message = "Something went wrong, try again later." + ex.Message
-            };
-            return TypedResults.BadRequest(errorResponse);
+            return TypedResults.BadRequest(
+                new AuthResponse
+                {
+                    IsSuccess = false,
+                    Message = "Something went wrong, try again later." + ex.Message
+                }
+            );
         }
     }
 
@@ -44,7 +47,9 @@ public class AuthEndpoints : ICarterModule
         try
         {
             var response = await auth.CreateUser(user);
-            return TypedResults.Ok(response);
+            return response.IsSuccess
+                ? TypedResults.Ok(response)
+                : TypedResults.BadRequest(response);
         }
         catch (Exception ex)
         {

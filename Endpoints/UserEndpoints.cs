@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Carter;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using ShareSpaceApi.Data.DTOs;
 using ShareSpaceApi.Data.DTOs.ResponseType;
 using ShareSpaceApi.Repository.Contracts;
@@ -55,7 +56,7 @@ public class UserEndpoints : ICarterModule
         Results<Ok<ApiResponse<string>>, BadRequest<ApiResponse<string>>>
     > StoreInterests(
         ClaimsPrincipal user,
-        IEnumerable<InterestsDto> interests,
+        [FromBody] IEnumerable<InterestsDto> interests,
         IUserRepository user_rep
     )
     {
@@ -81,7 +82,7 @@ public class UserEndpoints : ICarterModule
 
     public static async Task<
         Results<Ok<ApiResponse<ExtraUserInfoDto>>, BadRequest<ApiResponse<ExtraUserInfoDto>>>
-    > GetExtraInfo(Guid userid, IUserRepository user_rep)
+    > GetExtraInfo([FromRoute] Guid userid, IUserRepository user_rep)
     {
         try
         {
@@ -104,7 +105,7 @@ public class UserEndpoints : ICarterModule
 
     public static async Task<
         Results<Ok<ApiResponse<ProfileDto>>, BadRequest<ApiResponse<ProfileDto>>>
-    > GetProfile(string username, ClaimsPrincipal user, IUserRepository user_rep)
+    > GetProfile([FromRoute] string username, ClaimsPrincipal user, IUserRepository user_rep)
     {
         try
         {
@@ -128,7 +129,7 @@ public class UserEndpoints : ICarterModule
 
     public static async Task<
         Results<Ok<ApiResponse<string>>, BadRequest<ApiResponse<string>>>
-    > FollowUser(Guid userid, ClaimsPrincipal user, IUserRepository user_rep)
+    > FollowUser([FromRoute] Guid userid, ClaimsPrincipal user, IUserRepository user_rep)
     {
         try
         {

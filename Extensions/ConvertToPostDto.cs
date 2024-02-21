@@ -24,7 +24,7 @@ public static class ConvertToPostDto
                         PostedUserId = s.UserId,
                         PostId = s.Id,
                         PostPictureUrls =
-                            s.PostImages!.Select(i => i.ImageUrl) ?? Enumerable.Empty<string>(),
+                            s.PostImages!.Select(i => i.ImageUrl) ?? [],
                         LikesCount = s.Likes,
                         ViewsCount = s.Views,
                         CommentsCount = s.Comments?.Count ?? 0,

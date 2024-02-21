@@ -7,14 +7,9 @@ using ShareSpaceApi.Repository.Contracts;
 
 namespace ShareSpaceApi.Repository;
 
-public class NotificationRepository : INotificationRepostiory
+public class NotificationRepository(ShareSpaceDbContext shareSpaceDb) : INotificationRepostiory
 {
-    private readonly ShareSpaceDbContext shareSpaceDb;
-
-    public NotificationRepository(ShareSpaceDbContext shareSpaceDb)
-    {
-        this.shareSpaceDb = shareSpaceDb;
-    }
+    private readonly ShareSpaceDbContext shareSpaceDb = shareSpaceDb;
 
     public async void AddNotification(Guid source_id, Guid user_id, Status status)
     {

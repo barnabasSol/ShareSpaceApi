@@ -324,7 +324,7 @@ public class PostRepository(ShareSpaceDbContext shareSpaceDb, IWebHostEnvironmen
         catch (Exception ex)
         {
             await transaction.RollbackAsync();
-            return new ApiResponse<string> { IsSuccess = false, Message = ex.Message };
+            throw new Exception(ex.Message);
         }
     }
 }

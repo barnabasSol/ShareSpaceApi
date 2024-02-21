@@ -11,12 +11,22 @@ using ShareSpaceApi.Repository;
 using ShareSpaceApi.Repository.Contracts;
 using System.Text;
 
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCarter();
 builder.Services.AddSignalR();
 builder.Services.AddCors();
+
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<IPostRepository, PostRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<INotificationRepostiory, NotificationRepository>();
+builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+builder.Services.AddScoped<ISettingsRepository, SettingsRepository>();
+builder.Services.AddScoped<ISearchRepository, SearchRepository>();
 
 builder.Services.AddDbContext<ShareSpaceDbContext>(options =>
 {
@@ -29,15 +39,6 @@ builder.Services.AddResponseCompression(opts =>
         ["application/octet-stream"]
     );
 });
-
-builder.Services.AddScoped<IAuthRepository, AuthRepository>();
-builder.Services.AddScoped<IPostRepository, PostRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<INotificationRepostiory, NotificationRepository>();
-builder.Services.AddScoped<IMessageRepository, MessageRepository>();
-builder.Services.AddScoped<ICommentRepository, CommentRepository>();
-builder.Services.AddScoped<ISettingsRepository, SettingsRepository>();
-builder.Services.AddScoped<ISearchRepository, SearchRepository>();
 
 builder.Services.Configure<TokenSettings>(builder.Configuration.GetSection(nameof(TokenSettings)));
 
@@ -69,7 +70,7 @@ var app = builder.Build();
 app.UseCors(
     policy =>
         policy
-            .WithOrigins("http://localhost:7114", "https://localhost:7114")
+            .WithOrigins("http://localhost:4200", "https://localhost:4200")
             .AllowAnyHeader()
             .WithHeaders(HeaderNames.ContentType)
 );

@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Carter;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using ShareSpaceApi.Data.DTOs;
 using ShareSpaceApi.Data.DTOs.ResponseType;
 using ShareSpaceApi.Repository.Contracts;
@@ -23,7 +24,7 @@ public class SearchEndpoints : ICarterModule
             Ok<ApiResponse<IEnumerable<UserSearchDto>>>,
             BadRequest<ApiResponse<IEnumerable<UserSearchDto>>>
         >
-    > SearchUser(string query, ClaimsPrincipal user, ISearchRepository search_rep)
+    > SearchUser([FromRoute] string query, ClaimsPrincipal user, ISearchRepository search_rep)
     {
         try
         {
@@ -50,7 +51,7 @@ public class SearchEndpoints : ICarterModule
             Ok<ApiResponse<IEnumerable<PostSearchDto>>>,
             BadRequest<ApiResponse<IEnumerable<PostSearchDto>>>
         >
-    > SearchPost(string query, ClaimsPrincipal user, ISearchRepository search_rep)
+    > SearchPost([FromRoute] string query, ClaimsPrincipal user, ISearchRepository search_rep)
     {
         try
         {

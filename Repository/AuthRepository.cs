@@ -97,14 +97,14 @@ public class AuthRepository(ShareSpaceDbContext shareSpaceDb, IOptions<TokenSett
 
             if (!BC.Verify(user_login.Password, queried_user.PasswordHash))
             {
-                return new AuthResponse()
+                return new AuthResponse
                 {
                     IsSuccess = false,
                     Message = "incorrect password or username"
                 };
             }
 
-            return new AuthResponse()
+            return new AuthResponse
             {
                 IsSuccess = true,
                 AccessToken = GenerateAccessToken(queried_user, Role.User),
@@ -123,7 +123,7 @@ public class AuthRepository(ShareSpaceDbContext shareSpaceDb, IOptions<TokenSett
         SymmetricSecurityKey securityKey = new(Encoding.UTF8.GetBytes(token_Setting.SecretKey));
         DateTimeOffset dateTimeOffset = new(TokenExpiration);
         SigningCredentials credentials = new(securityKey, SecurityAlgorithms.HmacSha256);
-        List<Claim> claims =
+        Claim[] claims =
             [
                 new Claim(ClaimTypes.NameIdentifier, authorized_user.UserName),
                 new Claim("Sub", authorized_user.UserId.ToString()),
