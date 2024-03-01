@@ -1,6 +1,6 @@
 namespace ShareSpaceApi.Data.DTOs;
 
-public class CreateUserDTO
+public record CreateUserDTO
 {
     public required string Name { get; set; }
     public required string UserName { get; set; }
@@ -8,12 +8,7 @@ public class CreateUserDTO
     public required string Password { get; set; }
 }
 
-public struct MyStruct
-{
-    public string? ProfilePicUrl { get; set; }
-}
-
-public class ExtraUserInfoDto
+public record ExtraUserInfoDto
 {
     public string? ProfilePicUrl { get; set; }
     public string? Bio { get; set; }
@@ -23,13 +18,13 @@ public class ExtraUserInfoDto
     public IEnumerable<InterestsDto>? Interests { get; set; }
 }
 
-public class UserLoginDTO
+public record UserLoginDTO
 {
     public required string UserName { get; set; }
     public required string Password { get; set; }
 }
 
-public class FollowerUserDto
+public record FollowerUserDto
 {
     public Guid UserId { get; set; }
     public string? ProfilePicUrl { get; set; }
@@ -38,7 +33,7 @@ public class FollowerUserDto
     public bool IsBeingFollowed { get; set; }
 }
 
-public class SuggestedUserDto
+public record SuggestedUserDto
 {
     public required string Name { get; set; }
     public string? ProfilePicUrl { get; set; }
@@ -46,7 +41,7 @@ public class SuggestedUserDto
     public Guid UserId { get; set; }
 }
 
-public class UpdateUserProfileDto
+public record UpdateUserProfileDto
 {
     public string Name { get; set; } = string.Empty;
     public string UserName { get; set; } = string.Empty;
@@ -56,13 +51,13 @@ public class UpdateUserProfileDto
     public string? OldProfilePicUrl { get; set; }
 }
 
-public class UpdatePasswordDto
+public record UpdatePasswordDto
 {
     public string OldPassword { get; set; } = string.Empty;
     public string NewPassword { get; set; } = string.Empty;
 }
 
-public class ProfileDto
+public record ProfileDto
 {
     public ExtraUserInfoDto? ExtraUserInfoDto { get; set; }
     public Guid UserId { get; set; }

@@ -1,13 +1,13 @@
 namespace ShareSpaceApi.Data.DTOs;
 
-public class PostBase
+public record PostBase
 {
     public Guid PostId { get; set; }
     public Guid PostedUserId { get; set; }
     public string PostedUsername { get; set; } = string.Empty;
 }
 
-public class PostDto : PostBase
+public record PostDto : PostBase
 {
     public string? PostUserProfilePicUrl { get; set; }
     public required string PostedName { get; set; }
@@ -21,19 +21,19 @@ public class PostDto : PostBase
     public bool IsLikedByCurrentUser { get; set; }
 }
 
-public class PostDetailDto : PostDto
+public record PostDetailDto : PostDto
 {
     public List<CommentDto>? Comments { get; set; }
 }
 
-public class CreatePostDto
+public record CreatePostDto
 {
     public string? TextContent { get; set; }
     public IEnumerable<File>? PostFiles { get; set; }
     public Guid PostedUserId { get; set; }
 }
 
-public class File
+public record File
 {
     public byte[]? ImageBytes { get; set; }
     public string Name { get; set; } = string.Empty;
@@ -41,7 +41,7 @@ public class File
     public long Size { get; set; }
 }
 
-public class LikedPostDto
+public record LikedPostDto
 {
     public Guid PostId { get; set; }
     public Guid UserId { get; set; }

@@ -6,7 +6,6 @@ using ShareSpaceApi.Data.Models;
 using ShareSpaceApi.Extensions;
 using ShareSpaceApi.Repository.Contracts;
 
-namespace ShareSpaceApi.Repository;
 
 public class PostRepository(ShareSpaceDbContext shareSpaceDb, IWebHostEnvironment webHost) : IPostRepository
 {

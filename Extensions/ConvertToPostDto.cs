@@ -33,7 +33,6 @@ public static class ConvertToPostDto
                             a => a.PostId == s.Id && a.UserId == current_user
                         ),
                     }
-            )
-            .OrderByDescending(o => o.PostedDateTime)];
+            ).OrderByDescending(o => o.PostedDateTime)];
     }
 }

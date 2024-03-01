@@ -82,6 +82,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapCarter();
+app.UseStaticFiles();
 app.MapHub<MessageHub>("/messagehub");
 app.MapHub<NotificationHub>("/notificationhub");
 app.UseHttpsRedirection();

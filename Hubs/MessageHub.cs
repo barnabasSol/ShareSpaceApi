@@ -26,7 +26,7 @@ public class MessageHub(IMessageRepository messageRepository, ShareSpaceDbContex
     public async Task FetchMessagesOfUser(string username)
     {
         Guid current_user = Guid.Parse(
-            Context.User!.Claims.Where(w => w.Type == "Sub").Select(s => s.Value).FirstOrDefault()!
+            Context.User!.Claims.FirstOrDefault(w => w.Type == "Sub")!.Value
         );
         var response = await messageRepository.GetMessagesOfUser(
             current_user,
@@ -40,7 +40,7 @@ public class MessageHub(IMessageRepository messageRepository, ShareSpaceDbContex
     public async Task GetUnseenMessagesCount()
     {
         Guid current_user = Guid.Parse(
-            Context.User!.Claims.Where(w => w.Type == "Sub").Select(s => s.Value).FirstOrDefault()!
+            Context.User!.Claims.FirstOrDefault(w => w.Type == "Sub")!.Value
         );
 
         var response = await messageRepository.GetUnseenMessagesCount(current_user);
@@ -50,10 +50,7 @@ public class MessageHub(IMessageRepository messageRepository, ShareSpaceDbContex
 
     public async Task SendMessageToUser(string username, string message)
     {
-        var current_user = Context.User!.Claims
-            .Where(_ => _.Type == "Sub")
-            .Select(_ => _.Value)
-            .FirstOrDefault();
+        var current_user = Context.User!.Claims.FirstOrDefault(_ => _.Type == "Sub")!.Value;
         var cur_user_obj = await shareSpaceDb.Users.FindAsync(Guid.Parse(current_user!));
         if (cur_user_obj is null)
         {
@@ -94,13 +91,10 @@ public class MessageHub(IMessageRepository messageRepository, ShareSpaceDbContex
 
     public async Task ShowUsersInChat(string username)
     {
-        var current_user = Context.User!.Claims
-            .Where(_ => _.Type == "Sub")
-            .Select(_ => _.Value)
-            .FirstOrDefault();
+        var current_user = Context.User!.Claims.FirstOrDefault(_ => _.Type == "Sub")!.Value;
 
         var response = await messageRepository.GetUsersInChat(username);
         if (response.IsSuccess)
-            await Clients.User(username).SendAsync("ReceiveUsersInFromUser", response.Data);
+            await Clients.User(username).SendAsync("ReceiveUsersInChat", response.Data);
     }
 }

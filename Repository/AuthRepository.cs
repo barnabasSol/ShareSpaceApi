@@ -59,7 +59,7 @@ public class AuthRepository(ShareSpaceDbContext shareSpaceDb, IOptions<TokenSett
 
             await transaction.CommitAsync();
 
-            return new AuthResponse()
+            return new AuthResponse
             {
                 IsSuccess = true,
                 Message = "",
@@ -120,8 +120,8 @@ public class AuthRepository(ShareSpaceDbContext shareSpaceDb, IOptions<TokenSett
     public string GenerateAccessToken(User authorized_user, Role role)
     {
         var TokenExpiration = DateTime.Now.AddHours(15);
-        SymmetricSecurityKey securityKey = new(Encoding.UTF8.GetBytes(token_Setting.SecretKey));
         DateTimeOffset dateTimeOffset = new(TokenExpiration);
+        SymmetricSecurityKey securityKey = new(Encoding.UTF8.GetBytes(token_Setting.SecretKey));
         SigningCredentials credentials = new(securityKey, SecurityAlgorithms.HmacSha256);
         Claim[] claims =
             [

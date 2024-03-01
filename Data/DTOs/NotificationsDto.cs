@@ -6,7 +6,7 @@ public enum Status
     Unfollowed = -1
 }
 
-public class NotificationsDto
+public record NotificationsDto
 {
     public required string UserName { get; set; }
     public string? Name { get; set; }

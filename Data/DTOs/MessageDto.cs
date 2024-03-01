@@ -1,6 +1,6 @@
 namespace ShareSpaceApi.Data.DTOs;
 
-public class MessageDto
+public record MessageDto
 {
     public Guid MessageId { get; set; }
     public Guid From { get; set; }
@@ -11,7 +11,7 @@ public class MessageDto
     public DateTime SentDateTime { get; set; }
 }
 
-public class UserMessageDto
+public record UserMessageDto
 {
     public Guid UserId { get; set; }
     public string? UserName { get; set; }

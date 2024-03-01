@@ -1,6 +1,6 @@
 namespace ShareSpaceApi.Data.DTOs;
 
-public class CommentDto
+public record CommentDto
 {
     public Guid CommentId { get; set; }
     public Guid UserId { get; set; }
@@ -11,7 +11,7 @@ public class CommentDto
     public DateTime CommentedAt { get; set; }
 }
 
-public class CommentAddDto
+public record CommentAddDto
 {
     public Guid PostId { get; set; }
     public required string Content { get; set; }

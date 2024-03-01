@@ -1,6 +1,6 @@
 namespace ShareSpaceApi.Data.DTOs.ResponseType;
 
-public class AuthResponse
+public record AuthResponse
 {
     public bool IsSuccess { get; set; }
     public string AccessToken { get; set; } = string.Empty;
@@ -8,7 +8,7 @@ public class AuthResponse
     public string Message { get; set; } = string.Empty;
 }
 
-public class ApiResponse<X>
+public record ApiResponse<X>
 {
     public bool IsSuccess { get; set; }
     public string Message { get; set; } = string.Empty;

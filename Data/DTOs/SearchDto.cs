@@ -1,6 +1,6 @@
 namespace ShareSpaceApi.Data.DTOs;
 
-public class UserSearchDto
+public record UserSearchDto
 {
     public Guid UserId { get; set; }
     public string? ProfilePic { get; set; }
@@ -9,7 +9,7 @@ public class UserSearchDto
     public bool IsBeingFollowed { get; set; }
 }
 
-public class PostSearchDto : PostBase
+public record PostSearchDto : PostBase
 {
     public string? PostUserProfilePicUrl { get; set; }
     public string PostedName { get; set; } = string.Empty;

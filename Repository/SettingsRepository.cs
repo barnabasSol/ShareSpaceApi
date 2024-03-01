@@ -135,10 +135,10 @@ public class SettingsRepository(
 
             await shareSpaceDb.SaveChangesAsync();
             await transaction.CommitAsync();
-            var user_role = shareSpaceDb.UserRoles
+            var user_role = await shareSpaceDb.UserRoles
                 .Where(w => w.UserId == user_id)
                 .Select(s => s.RoleId)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
             Role role = user_role == 1 ? Role.User : Role.Admin;
             var new_token = authRepository.GenerateAccessToken(user, role);
             return new ApiResponse<AuthResponse>
