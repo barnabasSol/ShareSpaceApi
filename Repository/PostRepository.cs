@@ -101,6 +101,11 @@ public class PostRepository(ShareSpaceDbContext shareSpaceDb, IWebHostEnvironmen
         }
     }
 
+    public Task<ApiResponse<string>> EditPost()
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<ApiResponse<PostDetailDto>> GetPost(Guid post_id, Guid current_user)
     {
         try
@@ -209,12 +214,12 @@ public class PostRepository(ShareSpaceDbContext shareSpaceDb, IWebHostEnvironmen
                 .ToListAsync();
             
             if (posts.Count == 0){
-            return new ApiResponse<IEnumerable<PostDto>>
-            {
-                IsSuccess = false,
-                Message = "there's no posts for you",
-                Data = []
-            };
+                return new ApiResponse<IEnumerable<PostDto>>
+                {
+                    IsSuccess = false,
+                    Message = "there's no posts for you",
+                    Data = []
+                };
 
             }
 

@@ -7,27 +7,31 @@ using ShareSpaceApi.Repository.Contracts;
 namespace ShareSpaceApi.Hubs;
 
 [Authorize(Roles = "user")]
-public class MessageHub(IMessageRepository messageRepository, ShareSpaceDbContext shareSpaceDb)
-    : Hub
+public class MessageHub(IMessageRepository messageRepository, ShareSpaceDbContext shareSpaceDb) : Hub
 {
     private readonly IMessageRepository messageRepository = messageRepository;
     private readonly ShareSpaceDbContext shareSpaceDb = shareSpaceDb;
 
-    public override Task OnDisconnectedAsync(Exception? exception)
+    public override async Task OnConnectedAsync()
     {
-        return base.OnDisconnectedAsync(exception);
+        Guid connected_user_id = Guid.Parse(Context.User!.FindFirst("Sub")!.Value);
+        var status = await messageRepository.UpdateOnlineStatus(connected_user_id, true);
+        if (status.IsSuccess)
+            await Clients.All.SendAsync("UserOnlineStatusChanged", connected_user_id, true);
     }
 
-    public override Task OnConnectedAsync()
+    public override async Task OnDisconnectedAsync(Exception? exception)
     {
-        return base.OnConnectedAsync();
+        Guid disconnected_user_id = Guid.Parse(Context.User!.FindFirst("Sub")!.Value);
+        var status = await messageRepository.UpdateOnlineStatus(disconnected_user_id, false);
+        if (status.IsSuccess)
+            await Clients.All.SendAsync("UserOnlineStatusChanged", disconnected_user_id, false);
     }
 
     public async Task FetchMessagesOfUser(string username)
     {
-        Guid current_user = Guid.Parse(
-            Context.User!.Claims.FirstOrDefault(w => w.Type == "Sub")!.Value
-        );
+        var current_user = Guid.Parse(Context.User!.FindFirst("Sub")!.Value);
+
         var response = await messageRepository.GetMessagesOfUser(
             current_user,
             other_user: username
@@ -39,9 +43,7 @@ public class MessageHub(IMessageRepository messageRepository, ShareSpaceDbContex
 
     public async Task GetUnseenMessagesCount()
     {
-        Guid current_user = Guid.Parse(
-            Context.User!.Claims.FirstOrDefault(w => w.Type == "Sub")!.Value
-        );
+        var current_user = Guid.Parse(Context.User!.FindFirst("Sub")!.Value);
 
         var response = await messageRepository.GetUnseenMessagesCount(current_user);
         if (response.IsSuccess)
@@ -50,8 +52,8 @@ public class MessageHub(IMessageRepository messageRepository, ShareSpaceDbContex
 
     public async Task SendMessageToUser(string username, string message)
     {
-        var current_user = Context.User!.Claims.FirstOrDefault(_ => _.Type == "Sub")!.Value;
-        var cur_user_obj = await shareSpaceDb.Users.FindAsync(Guid.Parse(current_user!));
+        var sending_user = Guid.Parse(Context.User!.FindFirst("Sub")!.Value);
+        var cur_user_obj = await shareSpaceDb.Users.FindAsync(sending_user);
         if (cur_user_obj is null)
         {
             return;
@@ -61,7 +63,7 @@ public class MessageHub(IMessageRepository messageRepository, ShareSpaceDbContex
             var response = await messageRepository.StoreMessage(
                 new MessageDto
                 {
-                    From = Guid.Parse(current_user!),
+                    From = sending_user,
                     To = username,
                     Text = message,
                 }
@@ -75,14 +77,14 @@ public class MessageHub(IMessageRepository messageRepository, ShareSpaceDbContex
                         "ReceiveMessageFromUser",
                         Context.UserIdentifier,
                         message,
-                        Guid.Parse(current_user!),
+                        sending_user,
                         cur_user_obj.ProfilePicUrl
                     );
                 await Clients.Caller.SendAsync(
                     "ReceiveMessageFromUser",
                     Context.UserIdentifier,
                     message,
-                    Guid.Parse(current_user!),
+                    sending_user,
                     cur_user_obj.ProfilePicUrl
                 );
             }
@@ -91,7 +93,7 @@ public class MessageHub(IMessageRepository messageRepository, ShareSpaceDbContex
 
     public async Task ShowUsersInChat(string username)
     {
-        var current_user = Context.User!.Claims.FirstOrDefault(_ => _.Type == "Sub")!.Value;
+        var current_user = Context.User!.FindFirst("Sub")!.Value;
 
         var response = await messageRepository.GetUsersInChat(username);
         if (response.IsSuccess)

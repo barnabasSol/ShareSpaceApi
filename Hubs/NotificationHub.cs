@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace ShareSpaceApi.Hubs;
 
+[Authorize(Roles = "user")]
 public class NotificationHub : Hub
 {
     [Authorize(Roles = "user")]

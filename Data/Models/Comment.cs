@@ -1,33 +1,32 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ShareSpaceApi.Data.Models
+namespace ShareSpaceApi.Data.Models;
+
+[Table("comments")]
+public class Comment
 {
-    [Table("comments")]
-    public class Comment
-    {
-        [Key]
-        [Column("id")]
-        public Guid Id { get; set; }
+    [Key]
+    [Column("id")]
+    public Guid Id { get; set; }
 
-        [Column("content")]
-        public required string Content { get; set; }
+    [Column("content")]
+    public required string Content { get; set; }
 
-        [Column("likes")]
-        public int Likes { get; set; }
+    [Column("likes")]
+    public int Likes { get; set; }
 
-        [Column("created_at")]
-        public DateTime CreatedAt { get; set; }
+    [Column("created_at")]
+    public DateTime CreatedAt { get; set; }
 
-        [Column("user_id")]
-        [ForeignKey("User")]
-        public Guid UserId { get; set; }
+    [Column("user_id")]
+    [ForeignKey("User")]
+    public Guid UserId { get; set; }
 
-        [Column("post_id")]
-        [ForeignKey("Post")]
-        public Guid PostId { get; set; }
+    [Column("post_id")]
+    [ForeignKey("Post")]
+    public Guid PostId { get; set; }
 
-        public User? User { get; set; }
-        public Post? Post { get; set; }
-    }
+    public User? User { get; set; }
+    public Post? Post { get; set; }
 }

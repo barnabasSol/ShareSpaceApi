@@ -11,10 +11,23 @@ namespace ShareSpaceApi.Repository
     {
         private readonly ShareSpaceDbContext shareSpaceDb = shareSpaceDb;
 
-        public Task<ApiResponse<string>> DeleteMessage(Guid id)
+        public async Task<ApiResponse<string>> DeleteMessage(Guid id)
         {
-            throw new NotImplementedException();
+            var message = await shareSpaceDb.Messages.FindAsync(id);
+            if (message is not null){
+                shareSpaceDb.Messages.Remove(message);
+                await shareSpaceDb.SaveChangesAsync();
+                return new ApiResponse<string>{
+                    IsSuccess = true
+                };
+            }
+            
+            return new ApiResponse<string>{
+                IsSuccess = false,
+                Message = "unable to delete the message"
+            };
         }
+
 
         public async Task<ApiResponse<IEnumerable<MessageDto>>> GetMessagesOfUser(
             Guid current_user,
@@ -80,20 +93,20 @@ namespace ShareSpaceApi.Repository
         {
             try
             {
-                Guid current_user_guid = shareSpaceDb.Users
-                    .First(w => w.UserName == username)!
-                    .UserId;
+                var current_user = await shareSpaceDb.Users
+                    .FirstAsync(w => w.UserName == username)!
+                    ;
 
                 var messages = await shareSpaceDb.Messages
                     .Where(
                         m =>
-                            m.SenderId.Equals(current_user_guid)
-                            || m.ReceiverId.Equals(current_user_guid)
+                            m.SenderId.Equals(current_user.UserId)
+                            || m.ReceiverId.Equals(current_user.UserId)
                     )
                     .ToListAsync();
 
                 var users_in_chat = messages
-                    .GroupBy(m => m.SenderId.Equals(current_user_guid) ? m.ReceiverId : m.SenderId)
+                    .GroupBy(m => m.SenderId.Equals(current_user.UserId) ? m.ReceiverId : m.SenderId)
                     .Select(g => new { UserId = g.Key, LastMessage = g.MaxBy(b => b.CreatedAt) })
                     .Join(
                         shareSpaceDb.Users,
@@ -178,9 +191,21 @@ namespace ShareSpaceApi.Repository
             }
         }
 
-        public Task<ApiResponse<string>> UpdateSeenStatus(Guid current_user)
+        public async Task<ApiResponse<string>> UpdateOnlineStatus(Guid current_user, bool new_status)
         {
-            throw new NotImplementedException();
+        var connected_user = await shareSpaceDb.Users.FindAsync(current_user);
+        if (connected_user is not null)
+        {
+            connected_user.OnlineStatus = new_status;
+            await shareSpaceDb.SaveChangesAsync();
+            return new ApiResponse<string>{
+                IsSuccess = true,
+            };
+        }
+            return new ApiResponse<string>{
+                IsSuccess = false,
+                Message = "couldn't change online status"
+            };
         }
     }
 }

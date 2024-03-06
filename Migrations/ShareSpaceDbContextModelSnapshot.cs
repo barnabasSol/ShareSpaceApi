@@ -131,6 +131,281 @@ namespace ShareSpaceApi.Migrations
                         {
                             Id = 5,
                             InterestName = "Movies"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            InterestName = "Music"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            InterestName = "Art"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            InterestName = "Reading"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            InterestName = "Writing"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            InterestName = "Dancing"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            InterestName = "Gaming"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            InterestName = "Gardening"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            InterestName = "Hiking"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            InterestName = "Cycling"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            InterestName = "Fishing"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            InterestName = "Yoga"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            InterestName = "Meditation"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            InterestName = "Photography"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            InterestName = "Knitting"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            InterestName = "Sewing"
+                        },
+                        new
+                        {
+                            Id = 21,
+                            InterestName = "Pottery"
+                        },
+                        new
+                        {
+                            Id = 22,
+                            InterestName = "Woodworking"
+                        },
+                        new
+                        {
+                            Id = 23,
+                            InterestName = "Baking"
+                        },
+                        new
+                        {
+                            Id = 24,
+                            InterestName = "Astronomy"
+                        },
+                        new
+                        {
+                            Id = 25,
+                            InterestName = "Bird Watching"
+                        },
+                        new
+                        {
+                            Id = 26,
+                            InterestName = "Scuba Diving"
+                        },
+                        new
+                        {
+                            Id = 27,
+                            InterestName = "Rock Climbing"
+                        },
+                        new
+                        {
+                            Id = 28,
+                            InterestName = "Surfing"
+                        },
+                        new
+                        {
+                            Id = 29,
+                            InterestName = "Running"
+                        },
+                        new
+                        {
+                            Id = 30,
+                            InterestName = "Swimming"
+                        },
+                        new
+                        {
+                            Id = 31,
+                            InterestName = "Puzzles"
+                        },
+                        new
+                        {
+                            Id = 32,
+                            InterestName = "Chess"
+                        },
+                        new
+                        {
+                            Id = 33,
+                            InterestName = "Magic Tricks"
+                        },
+                        new
+                        {
+                            Id = 34,
+                            InterestName = "Origami"
+                        },
+                        new
+                        {
+                            Id = 35,
+                            InterestName = "Painting"
+                        },
+                        new
+                        {
+                            Id = 36,
+                            InterestName = "Sculpture"
+                        },
+                        new
+                        {
+                            Id = 37,
+                            InterestName = "Calligraphy"
+                        },
+                        new
+                        {
+                            Id = 38,
+                            InterestName = "Graffiti"
+                        },
+                        new
+                        {
+                            Id = 39,
+                            InterestName = "Cosplay"
+                        },
+                        new
+                        {
+                            Id = 40,
+                            InterestName = "Stand-up Comedy"
+                        },
+                        new
+                        {
+                            Id = 41,
+                            InterestName = "Podcasting"
+                        },
+                        new
+                        {
+                            Id = 42,
+                            InterestName = "Blogging"
+                        },
+                        new
+                        {
+                            Id = 43,
+                            InterestName = "Vlogging"
+                        },
+                        new
+                        {
+                            Id = 44,
+                            InterestName = "Programming"
+                        },
+                        new
+                        {
+                            Id = 45,
+                            InterestName = "Robotics"
+                        },
+                        new
+                        {
+                            Id = 46,
+                            InterestName = "3D Printing"
+                        },
+                        new
+                        {
+                            Id = 47,
+                            InterestName = "Astrology"
+                        },
+                        new
+                        {
+                            Id = 48,
+                            InterestName = "Tarot Reading"
+                        },
+                        new
+                        {
+                            Id = 49,
+                            InterestName = "Martial Arts"
+                        },
+                        new
+                        {
+                            Id = 50,
+                            InterestName = "Parkour"
+                        },
+                        new
+                        {
+                            Id = 51,
+                            InterestName = "Wine Tasting"
+                        },
+                        new
+                        {
+                            Id = 52,
+                            InterestName = "Brewing Beer"
+                        },
+                        new
+                        {
+                            Id = 53,
+                            InterestName = "Coffee Roasting"
+                        },
+                        new
+                        {
+                            Id = 54,
+                            InterestName = "Cooking Exotic Dishes"
+                        },
+                        new
+                        {
+                            Id = 55,
+                            InterestName = "Learning New Languages"
+                        },
+                        new
+                        {
+                            Id = 56,
+                            InterestName = "Volunteering"
+                        },
+                        new
+                        {
+                            Id = 57,
+                            InterestName = "Archaeology"
+                        },
+                        new
+                        {
+                            Id = 58,
+                            InterestName = "Genealogy"
+                        },
+                        new
+                        {
+                            Id = 59,
+                            InterestName = "Meteorology"
+                        },
+                        new
+                        {
+                            Id = 60,
+                            InterestName = "Philosophy"
                         });
                 });
 
@@ -447,6 +722,12 @@ namespace ShareSpaceApi.Migrations
                         .IsRequired()
                         .HasColumnType("VARCHAR(100)")
                         .HasColumnName("name");
+
+                    b.Property<bool>("OnlineStatus")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("online_status");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()

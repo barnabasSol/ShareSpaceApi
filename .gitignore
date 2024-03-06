@@ -1,3 +1,6 @@
 /bin
 /obj
-/wwwroot
+/wwwroot/Uploads/ProfilePictures/*
+/wwwroot/Uploads/PostPictures/*
+/.vs
+/Migrations
