@@ -6,6 +6,7 @@ using ShareSpaceApi.Data.Models;
 using ShareSpaceApi.Extensions;
 using ShareSpaceApi.Repository.Contracts;
 
+namespace ShareSpaceApi.Repository;
 
 public class PostRepository(ShareSpaceDbContext shareSpaceDb, IWebHostEnvironment webHost) : IPostRepository
 {
@@ -34,7 +35,7 @@ public class PostRepository(ShareSpaceDbContext shareSpaceDb, IWebHostEnvironmen
 
                     shareSpaceDb.PostImages.Add(newPostImage);
 
-                    using var FileStream = System.IO.File.Create(FileName);
+                    using var FileStream = File.Create(FileName);
                     await FileStream.WriteAsync(file.ImageBytes);
                 }
                 if (post.ExtractTags().Any())
@@ -82,8 +83,8 @@ public class PostRepository(ShareSpaceDbContext shareSpaceDb, IWebHostEnvironmen
                 foreach (var postImage in postImages)
                 {
                     var imagePath = Path.Combine(webRootPath, postImage.ImageUrl.TrimStart('/'));
-                    if (System.IO.File.Exists(imagePath))
-                        System.IO.File.Delete(imagePath);
+                    if (File.Exists(imagePath))
+                        File.Delete(imagePath);
                 }
                 shareSpaceDb.Posts.Remove(post);
 
@@ -101,8 +102,30 @@ public class PostRepository(ShareSpaceDbContext shareSpaceDb, IWebHostEnvironmen
         }
     }
 
-    public Task<ApiResponse<string>> EditPost()
+    public async Task<ApiResponse<string>> EditPost(EditPostDto editPostDto)
     {
+        try
+        {
+            var post = await shareSpaceDb.Posts.FindAsync(editPostDto.PostId);
+            if (post is not null)
+            {
+                post.Content = editPostDto.TextContent;
+                await shareSpaceDb.SaveChangesAsync();
+                return new ApiResponse<string>
+                {
+                    IsSuccess = true,
+                };
+            }
+            return new ApiResponse<string>
+            {
+                IsSuccess = false,
+                Message = "couldn't edit the damn thing, try again later"
+            };
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
         throw new NotImplementedException();
     }
 
@@ -212,8 +235,9 @@ public class PostRepository(ShareSpaceDbContext shareSpaceDb, IWebHostEnvironmen
                         || w.PostTags!.Any(pt => likedTags.Contains(pt.TagName))
                 )
                 .ToListAsync();
-            
-            if (posts.Count == 0){
+
+            if (posts.Count == 0)
+            {
                 return new ApiResponse<IEnumerable<PostDto>>
                 {
                     IsSuccess = false,

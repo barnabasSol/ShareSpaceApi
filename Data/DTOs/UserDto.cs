@@ -8,6 +8,10 @@ public record CreateUserDTO
     public required string Password { get; set; }
 }
 
+public record UpdatePasswordDto(string OldPassword, string NewPassword);
+
+public record UserLoginDTO(string UserName, string Password);
+
 public record ExtraUserInfoDto
 {
     public string? ProfilePicUrl { get; set; }
@@ -16,12 +20,6 @@ public record ExtraUserInfoDto
     public int FollowingCount { get; set; }
     public DateTime JoinedDate { get; set; }
     public IEnumerable<InterestsDto>? Interests { get; set; }
-}
-
-public record UserLoginDTO
-{
-    public required string UserName { get; set; }
-    public required string Password { get; set; }
 }
 
 public record FollowerUserDto
@@ -47,14 +45,8 @@ public record UpdateUserProfileDto
     public string UserName { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string Bio { get; set; } = string.Empty;
-    public File? ProfilePic { get; set; }
+    public FileDto? ProfilePic { get; set; }
     public string? OldProfilePicUrl { get; set; }
-}
-
-public record UpdatePasswordDto
-{
-    public string OldPassword { get; set; } = string.Empty;
-    public string NewPassword { get; set; } = string.Empty;
 }
 
 public record ProfileDto

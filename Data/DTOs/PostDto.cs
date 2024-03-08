@@ -29,11 +29,11 @@ public record PostDetailDto : PostDto
 public record CreatePostDto
 {
     public string? TextContent { get; set; }
-    public IEnumerable<File>? PostFiles { get; set; }
+    public IEnumerable<FileDto>? PostFiles { get; set; }
     public Guid PostedUserId { get; set; }
 }
 
-public record File
+public record FileDto
 {
     public byte[]? ImageBytes { get; set; }
     public string Name { get; set; } = string.Empty;
@@ -46,3 +46,5 @@ public record LikedPostDto
     public Guid PostId { get; set; }
     public Guid UserId { get; set; }
 }
+
+public record EditPostDto(Guid PostId, string TextContent);

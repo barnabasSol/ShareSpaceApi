@@ -2,12 +2,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using ShareSpaceApi.Data.Context;
 using ShareSpaceApi.Data.DTOs;
+using ShareSpaceApi.Hubs.ResponseTypes;
 using ShareSpaceApi.Repository.Contracts;
 
 namespace ShareSpaceApi.Hubs;
 
 [Authorize(Roles = "user")]
-public class MessageHub(IMessageRepository messageRepository, ShareSpaceDbContext shareSpaceDb) : Hub
+public class MessageHub(IMessageRepository messageRepository, ShareSpaceDbContext shareSpaceDb)
+    : Hub
 {
     private readonly IMessageRepository messageRepository = messageRepository;
     private readonly ShareSpaceDbContext shareSpaceDb = shareSpaceDb;
@@ -17,7 +19,10 @@ public class MessageHub(IMessageRepository messageRepository, ShareSpaceDbContex
         Guid connected_user_id = Guid.Parse(Context.User!.FindFirst("Sub")!.Value);
         var status = await messageRepository.UpdateOnlineStatus(connected_user_id, true);
         if (status.IsSuccess)
-            await Clients.All.SendAsync("UserOnlineStatusChanged", connected_user_id, true);
+            await Clients.All.SendAsync(
+                "UserOnlineStatusChanged",
+                new OnlineStatus(connected_user_id, true)
+            );
     }
 
     public override async Task OnDisconnectedAsync(Exception? exception)
@@ -25,7 +30,10 @@ public class MessageHub(IMessageRepository messageRepository, ShareSpaceDbContex
         Guid disconnected_user_id = Guid.Parse(Context.User!.FindFirst("Sub")!.Value);
         var status = await messageRepository.UpdateOnlineStatus(disconnected_user_id, false);
         if (status.IsSuccess)
-            await Clients.All.SendAsync("UserOnlineStatusChanged", disconnected_user_id, false);
+            await Clients.All.SendAsync(
+                "UserOnlineStatusChanged",
+                new OnlineStatus(disconnected_user_id, false)
+            );
     }
 
     public async Task FetchMessagesOfUser(string username)
@@ -54,10 +62,10 @@ public class MessageHub(IMessageRepository messageRepository, ShareSpaceDbContex
     {
         var sending_user = Guid.Parse(Context.User!.FindFirst("Sub")!.Value);
         var cur_user_obj = await shareSpaceDb.Users.FindAsync(sending_user);
+
         if (cur_user_obj is null)
-        {
             return;
-        }
+
         if (Context.UserIdentifier != username)
         {
             var response = await messageRepository.StoreMessage(
@@ -93,8 +101,7 @@ public class MessageHub(IMessageRepository messageRepository, ShareSpaceDbContex
 
     public async Task ShowUsersInChat(string username)
     {
-        var current_user = Context.User!.FindFirst("Sub")!.Value;
-
+        // var current_user = Context.User!.FindFirst("Sub")!.Value;
         var response = await messageRepository.GetUsersInChat(username);
         if (response.IsSuccess)
             await Clients.User(username).SendAsync("ReceiveUsersInChat", response.Data);

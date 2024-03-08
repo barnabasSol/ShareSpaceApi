@@ -19,9 +19,7 @@ public class CommentEndpoints : ICarterModule
         group.MapDelete("delete/{commentid:guid}", DeleteComment);
     }
 
-    public static async Task<
-        Results<Ok<ApiResponse<Guid>>, BadRequest<ApiResponse<Guid>>>
-    > AddComment(
+    public async Task<Results<Ok<ApiResponse<Guid>>, BadRequest<ApiResponse<Guid>>>> AddComment(
         ClaimsPrincipal user,
         CommentAddDto new_comment,
         ICommentRepository commentRepository
@@ -44,7 +42,7 @@ public class CommentEndpoints : ICarterModule
         }
     }
 
-    public static async Task<
+    public async Task<
         Results<Ok<ApiResponse<string>>, BadRequest<ApiResponse<string>>>
     > DeleteComment(
         [FromRoute] Guid commentid,

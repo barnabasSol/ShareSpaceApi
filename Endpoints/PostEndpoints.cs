@@ -19,9 +19,37 @@ public class PostEndpoints : ICarterModule
         group.MapDelete("delete/{postid:guid}", DeletePost);
         group.MapGet("{postid:guid}", GetPost);
         group.MapPut("like", Like);
+        group.MapPut("edit", EditPost);
     }
 
-    public static async Task<
+    private async Task<
+        Results<Ok<ApiResponse<string>>, BadRequest<ApiResponse<string>>>
+    >
+     EditPost(
+        [FromBody] EditPostDto editPost,
+        ClaimsPrincipal user,
+        IPostRepository post_rep
+     )
+    {
+        try
+        {
+            Guid user_id = Guid.Parse(user.FindFirst("Sub")!.Value);
+            var result = await post_rep.EditPost(editPost);
+            return result.IsSuccess ? TypedResults.Ok(result) : TypedResults.BadRequest(result);
+        }
+        catch (Exception ex)
+        {
+            return TypedResults.BadRequest(
+                new ApiResponse<string>
+                {
+                    IsSuccess = false,
+                    Message = $"server error happened, {ex.Message}. try again later"
+                }
+            );
+        }
+    }
+
+    public async Task<
         Results<Ok<ApiResponse<string>>, BadRequest<ApiResponse<string>>>
     > CreatePost(CreatePostDto post, IPostRepository post_rep, ClaimsPrincipal user)
     {
@@ -146,7 +174,7 @@ public class PostEndpoints : ICarterModule
         }
     }
 
-    public static async Task<
+    public async Task<
         Results<Ok<ApiResponse<PostDetailDto>>, BadRequest<ApiResponse<PostDetailDto>>>
     > GetPost([FromRoute] Guid postid, ClaimsPrincipal user, IPostRepository post_rep)
     {

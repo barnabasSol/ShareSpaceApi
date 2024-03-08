@@ -13,6 +13,7 @@ using System.Text;
 
 
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCarter();
@@ -70,7 +71,7 @@ var app = builder.Build();
 app.UseCors(
     policy =>
         policy
-            .WithOrigins(["http://localhost:4200", "https://localhost:4200"])
+            .WithOrigins("http://localhost:4200", "https://localhost:4200")
             .AllowAnyHeader()
             .WithHeaders(HeaderNames.ContentType)
 );
